@@ -1,12 +1,12 @@
 [package]
-name = "template"
+name = "harlaw"
 version = "1.0.0"
 authors = ["stscoundrel / Sampo Silvennoinen"]
 license = "MIT"
 readme = "README.md"
-repository = "https://github.com/stscoundrel/rust-template"
+repository = "https://github.com/stscoundrel/harlaw-rs"
 description = """
-Add definition here
+Transform DSL files to JSON. Formatting options available for custom output.
 """
 edition = "2018"
 
