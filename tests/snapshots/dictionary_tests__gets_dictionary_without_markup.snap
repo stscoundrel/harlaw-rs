@@ -1,0 +1,45 @@
+---
+source: tests/dictionary_tests.rs
+expression: result
+
+---
+[
+  {
+    "word": "foo",
+    "definitions": [
+      "Lorem ipsum dolor sit amet, dolor sit igitur"
+    ]
+  },
+  {
+    "word": "bar",
+    "definitions": [
+      "Dolor sit igitur.",
+      "Lorem ipsum dolor sit amet."
+    ]
+  },
+  {
+    "word": "baz",
+    "definitions": [
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua"
+    ]
+  },
+  {
+    "word": "foo2",
+    "definitions": [
+      "Lorem ipsum dolor sit amet, dolor sit igitur"
+    ]
+  },
+  {
+    "word": "bar2",
+    "definitions": [
+      "Dolor sit igitur.",
+      "Lorem ipsum dolor sit amet."
+    ]
+  },
+  {
+    "word": "baz2",
+    "definitions": [
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua"
+    ]
+  }
+]
