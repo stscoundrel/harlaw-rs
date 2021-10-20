@@ -8,12 +8,58 @@ const COLORS: &[&str] = &["[c aliceblue]", "[c antiquewhite]", "[c aqua]", "[c a
 const COMMON: &[&str] = &["[u]", "[/u]", "[trn]", "[/trn]", "[!trs]", "[/!trs]", "[com]", "[/com]", "[s]", "[/s]", "[lang]", "[/lang]", "[ex]", "[/ex]"];
 const REPLACEABLES: &[&str] = &["[b]", "[/b]", "[i]", "[/i]", "[p]", "[/p]", "[ref]", "[/ref]", "[sub]", "[/sub]", "[sup]", "[/sup]"];
 
+/// Search/replace struct for custom settings.
+///
+/// # Examples
+/// 
+/// ```
+/// use harlaw::ContentReplace;
+/// 
+/// let replace = ContentReplace {
+///     search: "[b]",
+///     replace: "<strong>",
+/// };
+/// 
+/// ```
+///
 #[derive(Serialize, Deserialize)]
 pub struct ContentReplace<'a> {
     pub search: &'a str,
     pub replace: &'a str,
 }
 
+/// Custom settings object for running removes and
+/// search/replaces on DSL file.
+///
+/// # Examples
+/// 
+/// ```
+/// use harlaw::{ContentReplace, HarlawSettings};
+/// 
+/// let settings = HarlawSettings {
+/// removes: vec!["[m1]", "[m2]", "[/m]", "\t"],
+/// replaces: vec![
+///     ContentReplace {
+///         search: "[b]",
+///         replace: "<thick>",
+///     },
+///     ContentReplace {
+///         search: "[/b]",
+///         replace: "</thick>",
+///     },
+///     ContentReplace {
+///         search: "[i]",
+///         replace: "<skew>",
+///     },
+///     ContentReplace {
+///         search: "[/i]",
+///         replace: "</skew>",
+///     }
+/// ],
+/// };
+/// 
+/// ```
+///
 #[derive(Serialize, Deserialize)]
 pub struct HarlawSettings<'a> {
     #[serde(borrow)]
