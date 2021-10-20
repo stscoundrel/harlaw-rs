@@ -12,8 +12,8 @@ where P: AsRef<Path>, {
     Ok(io::BufReader::new(file).lines())
 }
 
-pub fn read_dsl_file(filename: String) -> Result<Vec<String>, &'static str> {
-    if is_dsl_file(&filename) {
+pub fn read_dsl_file(filename: &str) -> Result<Vec<String>, &'static str> {
+    if is_dsl_file(filename) {
         return match read_lines(&filename) {
             Ok(line_results) => {
                 let mut lines = vec![];
@@ -54,7 +54,7 @@ mod tests {
 
     #[test]
     fn errors_on_non_dsl_files() {
-        let filename = String::from("undefined.json");
+        let filename = "undefined.json";
 
         let result = read_dsl_file(filename);
 
@@ -63,7 +63,7 @@ mod tests {
 
     #[test]
     fn errors_on_invalid_dsl_files() {
-        let filename = String::from("undefined.dsl");
+        let filename = "undefined.dsl";
 
         let result = read_dsl_file(filename);
 
@@ -72,7 +72,7 @@ mod tests {
 
     #[test]
     fn reads_dsl_file() {
-        let filename = String::from("src/reader/fixtures/dummy.dsl");
+        let filename = "src/reader/fixtures/dummy.dsl";
 
         let result = read_dsl_file(filename).unwrap();
 
