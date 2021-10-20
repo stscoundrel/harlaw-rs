@@ -1,3 +1,5 @@
+use serde::{Deserialize, Serialize};
+
 pub const TAB: &str = "\t";
 pub const SKIPS: &[&str]= &["#"];
 
@@ -6,12 +8,15 @@ const COLORS: &[&str] = &["[c aliceblue]", "[c antiquewhite]", "[c aqua]", "[c a
 const COMMON: &[&str] = &["[u]", "[/u]", "[trn]", "[/trn]", "[!trs]", "[/!trs]", "[com]", "[/com]", "[s]", "[/s]", "[lang]", "[/lang]", "[ex]", "[/ex]"];
 const REPLACEABLES: &[&str] = &["[b]", "[/b]", "[i]", "[/i]", "[p]", "[/p]", "[ref]", "[/ref]", "[sub]", "[/sub]", "[sup]", "[/sup]"];
 
+#[derive(Serialize, Deserialize)]
 pub struct ContentReplace<'a> {
     pub search: &'a str,
     pub replace: &'a str,
 }
 
+#[derive(Serialize, Deserialize)]
 pub struct HarlawSettings<'a> {
+    #[serde(borrow)]
     pub replaces: Vec<ContentReplace<'a>>,    
     pub removes: Vec<&'a str>,
 }
