@@ -7,12 +7,41 @@ mod formatter;
 pub use dictionary::DictionaryEntry;
 pub use settings::{HarlawSettings, ContentReplace, get_default_settings, get_no_markup_settings};
 
+
+/// Transform DSL dictionary into vector of DictionaryEntries with default markup.
+/// Default Lingvo tags are transformed to their HTML equilevants.
+/// 
+/// # Examples
+/// 
+/// ```
+/// use harlaw::{get_dictionary, DictionaryEntry};
+/// 
+/// let my_dictionary = "./my-dictionary.dsl";
+/// 
+/// // Result either contains Vec<DictionaryEntry> or error message
+/// let result = get_dictionary(my_dictionary);
+/// 
+/// ```
 pub fn get_dictionary(filepath: &str) -> Result<Vec<DictionaryEntry>, &'static str> {
     let settings = get_default_settings();
 
     dictionary::to_dictionary(filepath, settings)
 }
 
+/// Transform DSL dictionary into vector of DictionaryEntries with not markup.
+/// This version removes all formatting tags.
+/// 
+/// # Examples
+/// 
+/// ```
+/// use harlaw::{get_dictionary_without_markup, DictionaryEntry};
+/// 
+/// let my_dictionary = "./my-dictionary.dsl";
+/// 
+/// // Result either contains Vec<DictionaryEntry> or error message
+/// let result = get_dictionary_without_markup(my_dictionary);
+/// 
+/// ```
 pub fn get_dictionary_without_markup(filepath: &str) -> Result<Vec<DictionaryEntry>, &'static str> {
     let settings = get_no_markup_settings();
 
