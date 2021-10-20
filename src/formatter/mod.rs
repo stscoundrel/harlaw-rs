@@ -1,8 +1,5 @@
 use crate::DictionaryEntry;
-use crate::HarlawSettings;
-
-const TAB: &str = "\t";
-const SKIPS: &[&str]= &["#"];
+use crate::settings::{HarlawSettings, TAB, SKIPS};
 
 fn format_line(line: &str, settings: &HarlawSettings) -> String {
     let mut formatted_line = String::from(line);
@@ -73,29 +70,13 @@ pub fn format_entries(lines: Vec<String>, settings: HarlawSettings) -> Vec<Dicti
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::{ContentReplace};
-
-    fn get_test_settings() -> HarlawSettings<'static> {
-        return HarlawSettings {
-            removes: vec!["[m1]", "[m2]", "[/m]", TAB],
-            replaces: vec![
-                ContentReplace {
-                    search: "[b]",
-                    replace: "<strong>"
-                },
-                ContentReplace {
-                    search: "[/b]",
-                    replace: "</strong>"
-                }
-            ],
-        };
-    }
+    use crate::settings::get_default_settings;
 
     #[test]
     fn formats_line() {
         let line = "	[m1]Lorem ipsum [b]dolor[/b] sit amet, dolor sit igitur[/m]";        
         
-        let result = format_line(line, &get_test_settings());
+        let result = format_line(line, &get_default_settings());
 
         assert_eq!(result, String::from("Lorem ipsum <strong>dolor</strong> sit amet, dolor sit igitur"));
     }
@@ -108,7 +89,7 @@ mod tests {
             String::from("	[m1]Lorem ipsum dolor sit amet, dolor sit igitur[/m]")
         ];
         
-        let result = format_entries(lines, get_test_settings());
+        let result = format_entries(lines, get_default_settings());
 
         assert_eq!(result[0].word, "foo");
         assert_eq!(result[0].definitions[0], "Lorem ipsum dolor sit amet, dolor sit igitur");
@@ -128,7 +109,7 @@ mod tests {
             String::from("	[m2]Lorem ipsum dolor sit amet.[/m]"),
         ];
         
-        let result = format_entries(lines, get_test_settings());
+        let result = format_entries(lines, get_default_settings());
 
         assert_eq!(result[0].word, "foo");
         assert_eq!(result[0].definitions[0], "Lorem ipsum dolor sit amet, dolor sit igitur");
