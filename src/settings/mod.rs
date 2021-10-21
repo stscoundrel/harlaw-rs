@@ -8,12 +8,58 @@ const COLORS: &[&str] = &["[c aliceblue]", "[c antiquewhite]", "[c aqua]", "[c a
 const COMMON: &[&str] = &["[u]", "[/u]", "[trn]", "[/trn]", "[!trs]", "[/!trs]", "[com]", "[/com]", "[s]", "[/s]", "[lang]", "[/lang]", "[ex]", "[/ex]"];
 const REPLACEABLES: &[&str] = &["[b]", "[/b]", "[i]", "[/i]", "[p]", "[/p]", "[ref]", "[/ref]", "[sub]", "[/sub]", "[sup]", "[/sup]"];
 
+/// Search/replace struct for custom settings.
+///
+/// # Examples
+/// 
+/// ```
+/// use harlaw::ContentReplace;
+/// 
+/// let replace = ContentReplace {
+///     search: "[b]",
+///     replace: "<strong>",
+/// };
+/// 
+/// ```
+///
 #[derive(Serialize, Deserialize)]
 pub struct ContentReplace<'a> {
     pub search: &'a str,
     pub replace: &'a str,
 }
 
+/// Custom settings object for running removes and
+/// search/replaces on DSL file.
+///
+/// # Examples
+/// 
+/// ```
+/// use harlaw::{ContentReplace, HarlawSettings};
+/// 
+/// let settings = HarlawSettings {
+/// removes: vec!["[m1]", "[m2]", "[/m]", "\t"],
+/// replaces: vec![
+///     ContentReplace {
+///         search: "[b]",
+///         replace: "<thick>",
+///     },
+///     ContentReplace {
+///         search: "[/b]",
+///         replace: "</thick>",
+///     },
+///     ContentReplace {
+///         search: "[i]",
+///         replace: "<skew>",
+///     },
+///     ContentReplace {
+///         search: "[/i]",
+///         replace: "</skew>",
+///     }
+/// ],
+/// };
+/// 
+/// ```
+///
 #[derive(Serialize, Deserialize)]
 pub struct HarlawSettings<'a> {
     #[serde(borrow)]
@@ -39,6 +85,40 @@ fn get_replaces() -> Vec<ContentReplace<'static>> {
     ]
 }
 
+/// Default settings for DSL transform. 
+/// You can use these as a base for your own custom settings. 
+/// 
+/// The default settings contain removes for common Lingvo markup,
+/// and replaces for common lingvo-to-html formatting tags. 
+/// 
+/// ```yml
+/// [b] -> <strong>
+/// [i] -> <i>
+/// [sub] -> <sub>
+/// 
+/// etc.
+/// ```
+///
+/// # Examples
+/// 
+/// ```
+/// use harlaw::{get_default_settings, ContentReplace};
+/// 
+/// let mut settings = get_default_settings();
+/// 
+/// // Append some custom search replace.
+/// settings.replaces.push(
+///     ContentReplace {
+///         search: "foo",
+///         replace: "bar",
+///     }
+/// );
+/// 
+/// // Append some custom remove
+/// settings.removes.push("baz");
+/// 
+/// ```
+///
 pub fn get_default_settings() -> HarlawSettings<'static> {
     HarlawSettings {
         removes: [MEANINGS, COLORS, &[TAB], COMMON].concat(),
@@ -46,6 +126,34 @@ pub fn get_default_settings() -> HarlawSettings<'static> {
     }
 }
 
+/// "No markup" settings for DSL transform.
+/// Does not perform any search/replaces, but instead removes all known Lingvo markup.
+/// 
+/// This means all formatting tags like bolds, italics etc. are removed along with
+/// non-presentatiotal lingvo markup.
+///
+/// # Examples
+/// 
+/// ```
+/// use harlaw::{get_no_markup_settings, ContentReplace};
+/// 
+/// // Use no markup settings as base for your own settings.
+/// let mut settings = get_no_markup_settings();
+/// 
+/// // Append additional removes
+/// settings.removes.push("foo");
+/// settings.removes.push("bar");
+/// settings.removes.push("baz");
+/// 
+/// // You can also append search replaces. By default there are none.
+/// settings.replaces.push(
+///     ContentReplace {
+///         search: "spam",
+///         replace: "bacon",
+///     }
+/// );
+/// ```
+///
 pub fn get_no_markup_settings() -> HarlawSettings<'static> {
     HarlawSettings {
         removes: [MEANINGS, COLORS, &[TAB], COMMON, REPLACEABLES].concat(),
