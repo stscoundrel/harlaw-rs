@@ -8,6 +8,8 @@ repository = "https://github.com/stscoundrel/harlaw-rs"
 description = """
 Transform DSL files to JSON. Formatting options available for custom output.
 """
+keywords = ["dsl", "json", "dictionary", "transform", "harlaw"]
+categories = ["encoding", "parsing", "text-processing"]
 edition = "2018"
 exclude = ["tests/*"]
 
