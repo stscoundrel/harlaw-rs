@@ -48,6 +48,41 @@ pub fn get_dictionary_without_markup(filepath: &str) -> Result<Vec<DictionaryEnt
     dictionary::to_dictionary(filepath, settings)
 }
 
+/// Transform DSL dictionary into vector of DictionaryEntries with custom formatting settings.
+/// 
+/// # Examples
+/// 
+/// ```
+/// use harlaw::{get_dictionary_with_custom_settings, ContentReplace, HarlawSettings, DictionaryEntry};
+/// 
+/// let my_dictionary = "./my-dictionary.dsl";
+/// 
+/// let settings = HarlawSettings {
+///     removes: vec!["[m1]", "[m2]", "[/m]", "\t"],
+///     replaces: vec![
+///         ContentReplace {
+///             search: "[b]",
+///             replace: "<thick>",
+///         },
+///         ContentReplace {
+///             search: "[/b]",
+///             replace: "</thick>",
+///         },
+///         ContentReplace {
+///             search: "[i]",
+///             replace: "<skew>",
+///         },
+///         ContentReplace {
+///             search: "[/i]",
+///             replace: "</skew>",
+///         }
+///     ],
+/// };
+/// 
+/// // Result either contains Vec<DictionaryEntry> or error message
+/// let result = get_dictionary_with_custom_settings(my_dictionary, settings);
+/// 
+/// ```
 pub fn get_dictionary_with_custom_settings(filename: &str, settings: HarlawSettings) -> Result<Vec<DictionaryEntry>, &'static str> {
     dictionary::to_dictionary(filename, settings)
 }
