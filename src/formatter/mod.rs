@@ -17,6 +17,10 @@ fn format_line(line: &str, settings: &HarlawSettings) -> String {
     formatted_line  
 }
 
+fn is_empty_line(line: &str) -> bool {
+    line.trim().is_empty()
+}
+
 // Metadata lines should not be transformed.
 fn is_metadata_line(first_character: &str) -> bool {
     SKIPS.contains(&&first_character[..])
@@ -32,7 +36,11 @@ pub fn format_entries(lines: Vec<String>, settings: HarlawSettings) -> Vec<Dicti
     let mut index = 0;
 
     for (line_index, line) in lines.iter().enumerate() {
-        let first_character = line.chars().next().unwrap().to_string();
+        if is_empty_line(line) {
+            continue;
+        }
+
+        let first_character = line.chars().next().unwrap().to_string();        
 
         // Skip metadata lines.
         if is_metadata_line(&first_character) {
@@ -123,6 +131,22 @@ mod tests {
         assert_eq!(result[0].definitions[0], "Lorem ipsum dolor sit amet, dolor sit igitur");
         assert_eq!(result[1].word, "bar");
         assert_eq!(result[1].definitions[0], "Dolor sit amet");
+    }
+
+    #[test]
+    fn allows_empty_lines() {
+        let lines = vec![
+            String::from("#NAME	\"Test Dictionary fixture\""),
+            String::from(""),
+            String::from("foo"),
+            String::new(),
+            String::from("    [m1]Lorem ipsum dolor sit amet, dolor sit igitur[/m]"),
+        ];
+        
+        let result = format_entries(lines, get_default_settings());
+
+        assert_eq!(result[0].word, "foo");
+        assert_eq!(result[0].definitions[0], "Lorem ipsum dolor sit amet, dolor sit igitur");
     }
 
     #[test]
