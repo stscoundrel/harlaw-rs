@@ -1,5 +1,5 @@
 use crate::DictionaryEntry;
-use crate::settings::{HarlawSettings, TAB, SKIPS};
+use crate::settings::{HarlawSettings, TAB, SPACE, SKIPS};
 
 fn format_line(line: &str, settings: &HarlawSettings) -> String {
     let mut formatted_line = String::from(line);
@@ -12,7 +12,19 @@ fn format_line(line: &str, settings: &HarlawSettings) -> String {
         formatted_line =  formatted_line.replace(pattern.search, pattern.replace);
      }
 
+     formatted_line = formatted_line.trim().to_string();
+
     formatted_line  
+}
+
+// Metadata lines should not be transformed.
+fn is_metadata_line(first_character: &str) -> bool {
+    SKIPS.contains(&&first_character[..])
+}
+
+// Line is definition line if first char is tab or space.
+fn is_definition_line(first_character: &str) -> bool {
+    first_character.eq(TAB) || first_character.eq(&SPACE.to_string())
 }
 
 pub fn format_entries(lines: Vec<String>, settings: HarlawSettings) -> Vec<DictionaryEntry> {
@@ -23,12 +35,12 @@ pub fn format_entries(lines: Vec<String>, settings: HarlawSettings) -> Vec<Dicti
         let first_character = line.chars().next().unwrap().to_string();
 
         // Skip metadata lines.
-        if SKIPS.contains(&&first_character[..]) {
+        if is_metadata_line(&first_character) {
             continue;
         }
 
-        // If line startes with tab, it is definition of previous entry.
-        if first_character.eq(TAB) {
+        // If line startes with starting character, it is definition of previous entry.
+        if is_definition_line(&first_character) {
             let formatted_line = format_line(line, &settings);
             dictionary_entries[index -1].definitions.push(formatted_line);
             continue;
@@ -93,6 +105,24 @@ mod tests {
 
         assert_eq!(result[0].word, "foo");
         assert_eq!(result[0].definitions[0], "Lorem ipsum dolor sit amet, dolor sit igitur");
+    }
+
+    #[test]
+    fn formats_simple_lines_with_spaces_instead_of_tabs() {
+        let lines = vec![
+            String::from("#NAME	\"Test Dictionary fixture\""),
+            String::from("foo"),
+            String::from("    [m1]Lorem ipsum dolor sit amet, dolor sit igitur[/m]"),
+            String::from("bar"),
+            String::from(" [m1]Dolor sit amet[/m]")
+        ];
+        
+        let result = format_entries(lines, get_default_settings());
+
+        assert_eq!(result[0].word, "foo");
+        assert_eq!(result[0].definitions[0], "Lorem ipsum dolor sit amet, dolor sit igitur");
+        assert_eq!(result[1].word, "bar");
+        assert_eq!(result[1].definitions[0], "Dolor sit amet");
     }
 
     #[test]

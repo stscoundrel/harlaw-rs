@@ -1,6 +1,7 @@
 use serde::{Deserialize, Serialize};
 
 pub const TAB: &str = "\t";
+pub const SPACE: &char = &' ';
 pub const SKIPS: &[&str]= &["#"];
 
 const MEANINGS: &[&str] = &["[/m]", "[m1]", "[m2]", "[m3]", "[m4]", "[m5]", "[m6]", "[m7]", "[m8]", "[m9]", "[m10]"];
