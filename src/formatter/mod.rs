@@ -23,7 +23,7 @@ fn is_empty_line(line: &str) -> bool {
 
 // Metadata lines should not be transformed.
 fn is_metadata_line(first_character: &str) -> bool {
-    SKIPS.contains(&&first_character[..])
+    SKIPS.contains(&first_character)
 }
 
 // Line is definition line if first char is tab or space.
