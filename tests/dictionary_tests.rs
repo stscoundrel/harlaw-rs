@@ -19,6 +19,14 @@ fn gets_dictionary_without_markup() {
 }
 
 #[test]
+fn gets_default_dictionary_with_spaces_and_empty_lines() {
+    let input = "./tests/fixtures/default_dictionary_spaces.dsl";
+    let result = get_dictionary(input).unwrap();
+
+    assert_json_snapshot!(result)
+}
+
+#[test]
 fn gets_dictionary_with_custom_settings() {
     let input = "./tests/fixtures/default_dictionary.dsl";
     let settings = HarlawSettings {
