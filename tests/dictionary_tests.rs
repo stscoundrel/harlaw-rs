@@ -30,7 +30,7 @@ fn gets_default_dictionary_with_spaces_and_empty_lines() {
 fn gets_dictionary_with_custom_settings() {
     let input = "./tests/fixtures/default_dictionary.dsl";
     let settings = HarlawSettings {
-        removes: vec!["[m1]", "[m2]", "[/m]", "\t"],
+        removes: vec!["[m0]", "[m1]", "[m2]", "[/m]", "\t"],
         replaces: vec![
             ContentReplace {
                 search: "[b]",

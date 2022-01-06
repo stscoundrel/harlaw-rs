@@ -7,6 +7,7 @@ expression: settings
   "replaces": [],
   "removes": [
     "[/m]",
+    "[m0]",
     "[m1]",
     "[m2]",
     "[m3]",
