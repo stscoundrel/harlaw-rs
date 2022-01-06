@@ -60,6 +60,7 @@ expression: get_default_settings()
   ],
   "removes": [
     "[/m]",
+    "[m0]",
     "[m1]",
     "[m2]",
     "[m3]",
