@@ -12,7 +12,7 @@ Add this to your `Cargo.toml`:
 
 ```toml
 [dependencies]
-harlaw = "1.0.0"
+harlaw = "1.1.1"
 ```
 
 ### Usage
